@@ -1,0 +1,200 @@
+/* ===========================
+   MOVIMENTARTE - ESTILO FINAL (SEM PX)
+   =========================== */
+
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-sizing: border-box;
+    text-transform: uppercase; /* TUDO EM MAIÚSCULO */
+}
+
+html, body {
+    height: auto;
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: #f7ffff;
+    color: #112b50;
+    font-size: 1.1rem; 
+    line-height: 1.5;
+}
+
+main {
+    width: 90%;
+    max-width: 50rem;
+    margin: 0 auto;
+    padding: 1rem 0;
+}
+
+/* Títulos e Textos */
+h1 {
+    color: #f28fad;
+    text-align: center;
+    font-size: clamp(2.2rem, 10vw, 4.2rem); 
+    font-weight: 900;
+    margin: 1.5rem 0;
+    line-height: 1;
+}
+
+h3 {
+    color: #3f5698;
+    text-align: center;
+    font-size: clamp(1.1rem, 3vw, 1.6rem);
+    margin: 0.5rem 0 1.5rem;
+}
+
+h2 {
+    color: #31989b;
+    font-size: clamp(1.6rem, 5vw, 2.6rem);
+    text-align: center;
+    margin: 2.5rem 0 1.2rem;
+}
+
+p {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+/* ===========================
+   PERFIS - FOTO AO LADO DO TEXTO
+   =========================== */
+.perfil {
+    display: flex;
+    flex-direction: column;
+    background-color: #3f5698;
+    border-radius: 1.5rem;
+    margin: 2rem auto;
+    width: 100%;
+    box-shadow: 0 0.4rem 1.2rem rgba(0,0,0,0.15);
+    overflow: hidden;
+}
+
+section:nth-child(even) .perfil {
+    background-color: #31989b;
+}
+
+.perfil-superior {
+    display: flex;
+    flex-direction: row; /* SEMPRE LADO A LADO */
+    align-items: center;
+    padding: 1.5rem;
+    gap: 1.2rem;
+}
+
+.rosto img {
+    width: clamp(5rem, 15vw, 6.5rem); 
+    height: auto;
+    aspect-ratio: 3/4;
+    border: 0.25rem solid #fbc232;
+    object-fit: cover;
+    border-radius: 0.8rem;
+}
+
+.infos {
+    flex: 1;
+    min-width: 0;
+}
+
+.infos h3 {
+    color: #f7ffff;
+    font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+    text-align: left;
+    margin: 0;
+}
+
+.infos p {
+    color: #fbc232;
+    font-size: clamp(0.75rem, 2vw, 0.95rem);
+    margin: 0.3rem 0 0;
+    font-style: italic;
+}
+
+/* Campo de Relato */
+.gravacao-perfil {
+    background-color: rgba(247, 255, 255, 0.95);
+    margin: 0 1.2rem 1.5rem;
+    padding: 1.2rem;
+    border-radius: 1rem;
+    text-align: center;
+}
+
+.botoes-gravar {
+    display: flex;
+    gap: 0.5rem;
+}
+
+button {
+    background-color: #f28fad;
+    color: #fff;
+    border: none;
+    padding: 0.8rem 1.2rem;
+    border-radius: 0.6rem;
+    cursor: pointer;
+    font-weight: 900;
+    font-size: 0.9rem;
+    flex: 1;
+}
+
+/* ===========================
+   MODAL - CORREÇÃO DE CENTRALIZAÇÃO
+   =========================== */
+.modal {
+    display: none; /* O JS deve mudar para 'flex' */
+    position: fixed; /* Fixa na tela */
+    z-index: 9999;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.85);
+    
+    /* ESTAS TRÊS LINHAS CENTRALIZAM O CONTEÚDO */
+    display: none; 
+    align-items: center; 
+    justify-content: center;
+}
+
+.modal-content {
+    background-color: #fbc232;
+    padding: 2rem;
+    width: 90%;
+    max-width: 28rem;
+    border-radius: 2rem;
+    border: 0.4rem solid #112b50;
+    text-align: center;
+    /* Remove margens manuais que podem deslocar o modal */
+    margin: 0; 
+}
+
+.modal-content input[type="text"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+    border: 0.15rem solid #112b50;
+    font-size: 1.1rem;
+}
+
+#btnEnviar {
+    background-color: #112b50;
+    color: #fff;
+    width: 100%;
+}
+
+#btnFechar {
+    background-color: transparent;
+    color: #112b50;
+    text-decoration: underline;
+    margin-top: 0.8rem;
+    box-shadow: none;
+}
+
+/* Ajuste mobile para botões do card */
+@media (max-width: 35rem) {
+    .botoes-gravar {
+        flex-direction: column;
+    }
+}
