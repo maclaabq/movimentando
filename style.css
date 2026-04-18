@@ -138,6 +138,40 @@ button {
     flex: 1;
 }
 
+/* =========================
+   UPLOAD DE IMAGEM 📸
+   ========================= */
+
+.upload-imagem {
+    background-color: #7689e8;
+    padding: 1.5rem;
+    border-radius: 1.5rem;
+    text-align: center;
+    margin: 2rem 0 3rem;
+    color: #fff;
+}
+
+.upload-imagem input[type="file"],
+.upload-imagem input[type="text"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin: 0.6rem 0;
+    border-radius: 0.6rem;
+    border: none;
+    font-size: 1rem;
+}
+
+#btnEnviarImagem {
+    background-color: #112b50;
+    width: 100%;
+    margin-top: 0.8rem;
+}
+
+#statusImagem {
+    margin-top: 1rem;
+    font-weight: 900;
+}
+
 /* ===========================
    MODAL - CORREÇÃO DE CENTRALIZAÇÃO
    =========================== */

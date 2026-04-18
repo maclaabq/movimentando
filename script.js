@@ -1,4 +1,10 @@
 /* =========================
+   CONFIG CLOUDINARY ☁️
+   ========================= */
+const CLOUDINARY_CLOUD = "dfivbyco4";
+const CLOUDINARY_PRESET = "movimentando_relatos";
+
+/* =========================
    VARIÁVEIS GLOBAIS
    ========================= */
 let mediaRecorder;
@@ -32,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('btnEnviar')?.addEventListener('click', confirmarEnvio);
     document.getElementById('btnFechar')?.addEventListener('click', fecharModal);
+    document.getElementById("btnEnviarImagem")?.addEventListener("click", enviarImagem);
 });
 
 
@@ -125,9 +132,8 @@ function sanitizarNomePerfil(texto) {
         .join("");
 }
 
-
 /* =========================
-   ENVIO ☁️ CLOUDINARY
+   CONFIRMAR ENVIO DO ÁUDIO 🎤
    ========================= */
 async function confirmarEnvio() {
 
@@ -135,7 +141,6 @@ async function confirmarEnvio() {
     const aceitou = document.getElementById('checkUnico').checked;
     if (!aceitou) return alert("Aceite o termo para enviar.");
 
-    /* ================= DATA BONITA ================= */
     const agora = new Date();
     const dia = String(agora.getDate()).padStart(2,'0');
     const mes = String(agora.getMonth()+1).padStart(2,'0');
@@ -144,41 +149,37 @@ async function confirmarEnvio() {
     const minuto = String(agora.getMinutes()).padStart(2,'0');
     const dataStr = `${dia}-${mes}-${ano}_${hora}h${minuto}`;
 
-    /* ================= ÁUDIO ================= */
     let arquivoFinal = idPendente === "ArquivoExterno"
         ? document.getElementById('inputArquivo').files[0]
         : audiosCache[idPendente];
 
     if (!arquivoFinal) return alert("Nenhum áudio encontrado.");
 
-    /* ================= NOME USUÁRIO ================= */
     const nomeUsuario = nomeDigitado === ""
         ? "anonimo"
         : nomeDigitado.replace(/\s+/g,"_");
 
-    /* ================= NOME PERFIL ================= */
     const divPerfil = document.getElementById(idPendente);
     const nomePerfilBruto = divPerfil.dataset.perfil || idPendente;
     const nomePerfil = sanitizarNomePerfil(nomePerfilBruto);
 
-    /* ================= EXTENSÃO ================= */
     const ext = idPendente === "ArquivoExterno"
         ? arquivoFinal.type.split('/')[1] || 'audio'
         : "webm";
 
-    /* ================= NOME FINAL ================= */
     const nomeFinal = `${nomePerfil}_${dataStr}_${nomeUsuario}.${ext}`;
 
     await enviarParaCloudinary(arquivoFinal, nomeFinal);
     fecharModal();
 }
 
-
+/* =========================
+   ENVIO ☁️ CLOUDINARY
+   ========================= */
 async function enviarParaCloudinary(blob, nomeArquivo) {
 
     const formData = new FormData();
 
-    // 🔥 TRANSFORMA O BLOB EM ARQUIVO COM NOME REAL
     const file = new File([blob], nomeArquivo, { type: blob.type });
     formData.append("file", file);
 
@@ -187,12 +188,12 @@ async function enviarParaCloudinary(blob, nomeArquivo) {
     formData.append("public_id", nomeArquivo.replace(/\.[^/.]+$/, ""));
 
     try {
-        const response = await fetch(
-            "https://api.cloudinary.com/v1_1/dfivbyco4/upload",
+        const resposta = await fetch(
+            `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/upload`,
             { method: "POST", body: formData }
         );
 
-        const data = await response.json();
+        const data = await resposta.json();
 
         if (data.secure_url) {
             alert("✅ Áudio enviado com sucesso!");
@@ -228,4 +229,70 @@ function alternarBotoes(id, gravando) {
     const bloco = document.getElementById(id);
     bloco.querySelectorAll('button')[0].disabled = gravando;
     bloco.querySelectorAll('button')[1].disabled = !gravando;
+}
+
+/* =========================
+   ENVIO DE IMAGEM 📸 CLOUDINARY
+   ========================= */
+async function enviarImagem() {
+
+    console.log("📸 Clique detectado");
+
+    const input = document.getElementById("inputImagem");
+    const nomeDigitado = document.getElementById("nomeImagem").value.trim();
+    const aceitou = document.getElementById("checkImagem").checked;
+    const status = document.getElementById("statusImagem");
+    const botao = document.getElementById("btnEnviarImagem");
+
+    if (!input.files.length) {
+        alert("Escolha uma imagem.");
+        return;
+    }
+
+    if (!aceitou) {
+        alert("Aceite o termo para enviar.");
+        return;
+    }
+
+    const arquivo = input.files[0];
+    const nomeAutor = nomeDigitado || "anonimo";
+    const timestamp = Date.now();
+
+    const nomeArquivo = `foto_${sanitizarNomePerfil(nomeAutor)}_${timestamp}`;
+
+    const formData = new FormData();
+    formData.append("file", arquivo);
+    formData.append("upload_preset", CLOUDINARY_PRESET);
+    formData.append("folder", "fotos-projeto");
+    formData.append("public_id", nomeArquivo);
+
+    try {
+        botao.disabled = true;
+        status.textContent = "ENVIANDO FOTO...";
+
+        const resposta = await fetch(
+            `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/upload`,
+            { method: "POST", body: formData }
+        );
+
+        const data = await resposta.json();
+
+        if (data.secure_url) {
+            status.textContent = "✅ FOTO ENVIADA COM SUCESSO!";
+            console.log("Imagem salva:", data.secure_url);
+
+            input.value = "";
+            document.getElementById("nomeImagem").value = "";
+            document.getElementById("checkImagem").checked = false;
+        } else {
+            status.textContent = "❌ ERRO AO ENVIAR";
+            console.error(data);
+        }
+
+    } catch (erro) {
+        status.textContent = "❌ FALHA DE CONEXÃO";
+        console.error(erro);
+    }
+
+    botao.disabled = false;
 }
