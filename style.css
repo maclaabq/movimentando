@@ -260,3 +260,39 @@ button {
     margin-top: 0.5rem;
     font-weight: 900;
 }
+
+/* =========================
+   PLAYER APRESENTAÇÃO 🎧
+   ========================= */
+
+.audio-apresentacao {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.titulo-audio {
+    color: #112b50;
+    font-weight: 900;
+    margin-bottom: 0.6rem;
+}
+
+/* player inteiro */
+#audioApresentacao {
+    width: 100%;
+    max-width: 28rem;
+    border-radius: 2rem;
+    overflow: hidden;
+}
+
+/* fundo do player */
+#audioApresentacao::-webkit-media-controls-panel {
+    background-color: #112b50;
+}
+
+/* deixa ícones brancos */
+#audioApresentacao::-webkit-media-controls-play-button,
+#audioApresentacao::-webkit-media-controls-current-time-display,
+#audioApresentacao::-webkit-media-controls-time-remaining-display,
+#audioApresentacao::-webkit-media-controls-volume-slider {
+    filter: invert(1);
+}
